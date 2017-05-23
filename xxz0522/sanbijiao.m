@@ -1,4 +1,4 @@
-clear all                       
+                
 close all
 clc
 for num=1:1:100
