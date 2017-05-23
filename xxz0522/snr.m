@@ -2,7 +2,7 @@
 close all
 clc
 
-        N=2000;%信号长度
+        N=10000;%信号长度
         signal=randi([0,1],1,N);
         psksignal = pskmod(signal,2); %bpsk调制
         f= 2.4*10^9; %载波频率 单位Hz
@@ -80,10 +80,10 @@ clc
                 BE1=BE1+1;
             end
         end
-        BER1(Snr)=BE1/((ind-1)*2); %比特不一致率
-       R1(Snr)=((ind-1)*2)/N;  %生成速率
+        BER1=BE1/((ind-1)*2); %比特不一致率
+       R1=((ind-1)*2)/N;  %生成速率
      laJ=0;
-     while BER1(Snr)>0.0001
+     while BER1>0.0001
         [lateq1,lateq2]=function1(q1,q2);
           BE=0;
             for  j=1:1:length(lateq1)
@@ -91,17 +91,19 @@ clc
                     BE=BE+1;
                 end
             end
-            BER(Snr)=BE/length(lateq1); %比特不一致率
+            BER=BE/length(lateq1); %比特不一致率
          q1=[];
          q2=[];
          q1=lateq1;
          q2=lateq2;
-         BER1(Snr)=BER(Snr);
+         lateq1=[];
+         lateq2=[];
+         BER1=BER;
          laJ=laJ+1;
      end
        %,q1,q2
            
-           R(Snr)=length(lateq1)/N;  %生成速率
+           R=length(q1)/N;  %生成速率
        
        %自己===========================================================================================
          for i=1:1:N
@@ -220,10 +222,37 @@ clc
                            w1BE=w1BE+1;  
                       end
                   end   
-                   w1BER(Snr)=w1BE/((inn-1)*2); %比特不一致率
-                   w1R(Snr)=2*(inn-1)/N;
+                   w1BER=w1BE/((inn-1)*2); %比特不一致率
+                   w1R=2*(inn-1)/N;
+                   
+% %                    [latewq1,latewq2]=function1(wq1,wq2);
+% %                    wBE=0;
+% %                   for i=1:1:length(latewq1)
+% %                       if latewq1(i)~=latewq2(i)
+% %                            wBE=wBE+1;  
+% %                       end
+% %                   end   
+% %                   
+% %                   [late1wq1,late1wq2]=function1(latewq1,latewq2);
+% %                    wBE=0;
+% %                   for i=1:1:length(late1wq1)
+% %                       if late1wq1(i)~=late1wq2(i)
+% %                            wBE=wBE+1;  
+% %                       end
+% %                   end   
+% % 
+% %                 [late2wq1,late2wq2]=function1(late1wq1,late1wq2);
+% %                    wBE=0;
+% %                   for i=1:1:length(late2wq1)
+% %                       if late2wq1(i)~=late2wq2(i)
+% %                            wBE=wBE+1;  
+% %                       end
+% %                   end   
+
+
+
                 laJw=0;   
-              while w1BER(Snr)>0.0001
+              while w1BER>0.0001
                   [latewq1,latewq2]=function1(wq1,wq2); 
                   wBE=0;
                   for i=1:1:length(latewq1)
@@ -231,15 +260,17 @@ clc
                            wBE=wBE+1;  
                       end
                   end   
-                   wBER(Snr)=wBE/length(latewq1); %比特不一致率
+                   wBER=wBE/length(latewq1); %比特不一致率
                    wq1=[];
                    wq2=[];
                    wq1=latewq1;
                    wq2=latewq2;
-                   w1BER(Snr)=wBER(Snr);
+                   latewq1=[];
+                   latewq2=[];
+                   w1BER=wBER;
                    laJw=laJw+1;
               end
-                   wR(Snr)=length(latewq1)/N;
+                   wR(Snr)=length(wq1)/N;
                    
                    %wq1,wq21
    
