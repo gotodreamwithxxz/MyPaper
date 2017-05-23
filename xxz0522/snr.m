@@ -115,10 +115,6 @@ clc
                            L(i)=2;
                         end
          end
-   
-       
-       
-         
               inn=1;
               rm=1;
           for i=1:1:N

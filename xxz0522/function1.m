@@ -1,6 +1,7 @@
 function [changeA,changeB] = function1(Alice,Bob)
       len = length(Alice);     %Alice的长度
-      H = [1 0 1 1 1 0 0;1 1 0 1 0 1 0;1 1 1 0 0 0 1];  %一致校验矩阵
+      H = [1 0 1 1 1 0 0;1 1 0 1 0 1 0;1 1 1 0 0 0 1];  
+      %一致校验矩阵
       %a1-a7,错误码Sc分别为001.010.100.110.101.011.111
       %奇偶校验码
       length1=floor(len/8);
@@ -41,6 +42,7 @@ function [changeA,changeB] = function1(Alice,Bob)
                 case 7
                     Bob(8*j-7)=Alice(8*j-7);
             end
+            
             Alice(8*j-4)=[];
             Alice(8*j-6)=[];
             Alice(8*j-7)=[];
