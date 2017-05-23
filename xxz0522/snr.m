@@ -2,7 +2,7 @@
 close all
 clc
 
-        N=10000;%信号长度
+        N=100000;%信号长度
         signal=randi([0,1],1,N);
         psksignal = pskmod(signal,2); %bpsk调制
         f= 2.4*10^9; %载波频率 单位Hz
