@@ -3,7 +3,7 @@ close all
 clc
 for num=1:1:100
     for k=10:1:30
-        N=5000;%信号长度
+        N=2000;%信号长度
         signal=randi([0,1],1,N);
         psksignal = pskmod(signal,2); %bpsk调制
         f= 2.4*10^9; %载波频率 单位Hz
