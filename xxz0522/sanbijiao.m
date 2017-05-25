@@ -3,7 +3,7 @@ close all
 clc
 for num=1:1:100
     for k=10:1:30
-        N=2000;%信号长度
+        N=5000;%信号长度
         signal=randi([0,1],1,N);
         psksignal = pskmod(signal,2); %bpsk调制
         f= 2.4*10^9; %载波频率 单位Hz
@@ -108,7 +108,7 @@ for num=1:1:100
      R(Snr)=length(q1)/N;  %生成速率
      q1=[];
      q2=[];
-     
+     rateCQG(Snr) = R(Snr)/R1(Snr);
      %  sum=0;      %熵值
      %   for i=1:1:(2*(ind-1))
       %      if q2(i)==1
@@ -455,44 +455,41 @@ for num=1:1:100
                    wR(Snr)=length(wq1)/N;
                    wq1=[];
                    wq2=[];
-   
+                   rateMy(Snr) = wR(Snr)/w1R(Snr);
   %========================公共部分============================================================       
     end %信噪比K的end
    
     for i=10:1:30
-        resBER(num,i)=BERbf(i);
+           resBER(num,i)=BERbf(i);
            resR(num,i)=R1(i);
            lateR(num,i)=R(i);
+           rate(num,i)=rateCQG(i);
 %         rescBER(num,i)=cBER(i);  
 %          resmBER(num,i)=mBER(i);   
-       reswBER(num,i)=wBERbf(i);
+          reswBER(num,i)=wBERbf(i);
           reswR(num,i)=w1R(i);
           latewR(num,i)=wR(i);
+          ratew(num,i)=rateMy(i);
     end
 
 end  %循环次数num的end
 
-avgBER=mean(resBER);
+   avgBER=mean(resBER);
    avgR=mean(resR);
    avgLR=mean(lateR);
+   avgrate=mean(rate);
 % avgcBER=mean(rescBER); 
 %   avgmBER=mean(resmBER); 
-  avgwBER=mean(reswBER);
-avgwR=mean(reswR);
-avgLwR=mean(latewR);
-for i=10:1:30
-    rateCQG(i) = avgLR(i)/avgR(i);
-    rateMy(i) = avgLwR(i)/avgwR(i);
-end
+    avgwBER=mean(reswBER);
+    avgwR=mean(reswR);
+    avgLwR=mean(latewR);
+    avgratew=mean(ratew);
+
 %不一致率比较=================================================================================
 figure(1)
-plot(avgBER,'-r');
+plot(avgBER,'-*r');
 hold on
-% plot(avgcBER,'-k*');
-% hold on
-% plot(avgmBER,'-b+');
-% hold on
-plot(avgwBER,'-m');
+plot(avgwBER,'-^m');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('不一致率')
@@ -502,9 +499,9 @@ legend('CQG','自己');
 %生成速率比较==============================================================================================
 
 figure(2)
-plot(avgR,'-r');
+plot(avgR,'-*r');
 hold on
-plot(avgwR,'-m');
+plot(avgwR,'-^m');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('比特生成率') 
@@ -513,22 +510,33 @@ legend('CQG','自己');
 
 %协商后的
 figure(3)
-plot(avgLR,'-r');
+plot(avgLR,'-*r');
 hold on
-plot(avgLwR,'-m');
+plot(avgLwR,'-^m');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('协商后比特生成率') 
-title('LR');
+title('LateR');
 legend('CQG','自己');
 
 %协商后的rate
 figure(4)
-plot(rateCQG,'-r');
+plot(avgrate,'-*r');
 hold on
-plot(rateMy,'-m');
+plot(avgratew,'-^m');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('协商后rate') 
-title('rate');
+title('Rate');
 legend('CQG','自己');
+
+%平滑曲线,测试的
+a = 10:1:30;  %横坐标
+b = avgrate(10:30);
+c = polyfit(a, b, 2);  %进行拟合，c为2次拟合后的系数
+d = polyval(c, a, 1);  %拟合后，每一个横坐标对应的值即为d
+figure(5);
+plot(a, d, 'r');  
+hold on %拟合后的曲线
+plot(a, b, '-*')
+hold on
