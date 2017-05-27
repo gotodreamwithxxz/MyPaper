@@ -53,12 +53,12 @@ function [changeA,changeB] = function1(Alice,Bob)
                     Bob(8*j-7)=Alice(8*j-7);
             end
             
-            Alice(8*j-4)=[];
-            Alice(8*j-6)=[];
-            Alice(8*j-7)=[];
-            Bob(8*j-4)=[];
-            Bob(8*j-6)=[];
-            Bob(8*j-7)=[];
+%             Alice(8*j-4)=[];
+%             Alice(8*j-6)=[];
+%             Alice(8*j-7)=[];
+%             Bob(8*j-4)=[];
+%             Bob(8*j-6)=[];
+%             Bob(8*j-7)=[];
             
         end
       end
