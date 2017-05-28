@@ -3,7 +3,7 @@ close all
 clc
 for num=1:1:30
     for k=10:1:30
-        N=1000;%信号长度
+        N=4000;%信号长度
         signal=randi([0,1],1,N);
         psksignal = pskmod(signal,2); %bpsk调制
         f= 2.4*10^9; %载波频率 单位Hz
@@ -27,7 +27,7 @@ for num=1:1:30
         yy2=atan2(re2,im2);%Bob接收到的信号幅值
  
         %CQG=====================================================================================
-               g=0.3;  %小区间占比
+               g=0.4;  %小区间占比
                A21=pi/2+g*pi/4;     A22=pi/2-g*pi/4;  %小区间门限
                A41=g*pi/4;          A42=-g*pi/4;
                A61=-pi/2+g*pi/4;    A62=-pi/2-g*pi/4;
@@ -233,7 +233,7 @@ for num=1:1:30
             In=In+1;
      end
      
-     
+     In=1;
           for i=1:1:N                           %Bob
             if yy2(i)<-7*pi/8&&yy2(i)>-pi  
                 if e(i)==1;
@@ -315,6 +315,7 @@ for num=1:1:30
             if yy2(i)<pi&&yy2(i)>7*pi/8  
                    mq2(3*In-2)=0; mq2(3*In-1)=0;  mq2(3*In)=0;
             end
+            In=In+1;
          end
            
          m1BE=0;
