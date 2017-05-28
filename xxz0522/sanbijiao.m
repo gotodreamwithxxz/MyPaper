@@ -1,7 +1,7 @@
                 
 close all
 clc
-for num=1:1:100
+for num=1:1:30
     for k=10:1:30
         N=2000;%信号长度
         signal=randi([0,1],1,N);
@@ -27,7 +27,7 @@ for num=1:1:100
         yy2=atan2(re2,im2);%Bob接收到的信号幅值
  
         %CQG=====================================================================================
-               g=0.35;  %小区间占比
+               g=0.49;  %小区间占比
                A11=pi/2+g*pi/2;A12=pi/2-g*pi/2;  %小区间门限
                A21=g*pi/2;A22=-g*pi/2;
                A31=-pi/2+g*pi/2;A32=-pi/2-g*pi/2;
@@ -321,22 +321,39 @@ for num=1:1:100
                          
                end
                 if L(i)==1
+%                     if yy2(i)<A42 && yy2(i)>A11
+%                            wq2(2*inn-1)=0;
+%                            wq2(2*inn)=0;
+%                            inn=inn+1;
+%                     elseif yy2(i)<A12 && yy2(i)>A21
+%                            wq2(2*inn-1)=1;
+%                            wq2(2*inn)=0;
+%                            inn=inn+1;
+%                     elseif yy2(i)<A22 &&yy2(i)>A31
+%                            wq2(2*inn-1)=1;
+%                            wq2(2*inn)=1;
+%                            inn=inn+1;
+%                     elseif yy2(i)<A32 &&yy2(i)>A41
+%                            wq2(2*inn-1)=0;
+%                            wq2(2*inn)=1;
+%                            inn=inn+1;
+                           
                     if yy2(i)<pi&&yy2(i)>pi/2
-                           wq2(2*inn-1)=0;
-                           wq2(2*inn)=0;
-                           inn=inn+1;
+                            wq2(2*inn-1)=0;
+                            wq2(2*inn)=0;
+                            inn=inn+1;
                     elseif yy2(i)<pi/2&&yy2(i)>0
-                           wq2(2*inn-1)=1;
-                           wq2(2*inn)=0;
-                           inn=inn+1;
+                            wq2(2*inn-1)=1;
+                            wq2(2*inn)=0;
+                            inn=inn+1;
                     elseif yy2(i)<0&&yy2(i)>-pi/2
-                           wq2(2*inn-1)=1;
-                           wq2(2*inn)=1;
-                           inn=inn+1;
+                            wq2(2*inn-1)=1;
+                            wq2(2*inn)=1;
+                            inn=inn+1;
                     elseif yy2(i)<-pi/2&&yy2(i)>-pi
-                           wq2(2*inn-1)=0;
-                           wq2(2*inn)=1;
-                           inn=inn+1;
+                            wq2(2*inn-1)=0;
+                            wq2(2*inn)=1;
+                            inn=inn+1;
                     else
                                list(rm)=i;
                                rm=rm+1;
