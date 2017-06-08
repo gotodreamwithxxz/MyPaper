@@ -227,7 +227,7 @@ for num=1:1:30
             end
         end
         m1BER(Snr)=m1BE/(N*2); %比特不一致率
-                   mBERbf(Snr)=m1BER(Snr);
+        mBERbf(Snr)=m1BER(Snr);
                    
                    laJm=0;   
               while m1BER(Snr)>0.0001
@@ -254,21 +254,115 @@ for num=1:1:30
                    mq2=[];
                    rateMAQ(Snr) = mR(Snr)/2;
      
-     
-       
-       
        %CQA======================================================================
-    for i=1:1:N
-                   if  yy1(i)<pi&&yy1(i)>A42|| yy1(i)<pi/2&&yy1(i)>A12|| yy1(i)<0&&yy1(i)>A22|| yy1(i)<-pi/2&&yy1(i)>A32
-                       L(i)=0;
-                   end
-                    if  yy1(i)<A42&&yy1(i)>A11|| yy1(i)<A12&&yy1(i)>A21|| yy1(i)<A22&&yy1(i)>A31|| yy1(i)<A32&&yy1(i)>A41  
-                         L(i)=1;  
-                    end
-                    if  yy1(i)<A11&&yy1(i)>pi/2|| yy1(i)<A21&&yy1(i)>0|| yy1(i)<A31&&yy1(i)>-pi/2|| yy1(i)<A41&&yy1(i)>-pi
-                       L(i)=2;
-                    end
-     end
+        for i=1:1:N
+                       if  yy1(i)<pi&&yy1(i)>A42|| yy1(i)<pi/2&&yy1(i)>A12|| yy1(i)<0&&yy1(i)>A22|| yy1(i)<-pi/2&&yy1(i)>A32
+                           L(i)=0;
+                       end
+                        if  yy1(i)<A42&&yy1(i)>A11|| yy1(i)<A12&&yy1(i)>A21|| yy1(i)<A22&&yy1(i)>A31|| yy1(i)<A32&&yy1(i)>A41  
+                           L(i)=1;  
+                        end
+                        if  yy1(i)<A11&&yy1(i)>pi/2|| yy1(i)<A21&&yy1(i)>0|| yy1(i)<A31&&yy1(i)>-pi/2|| yy1(i)<A41&&yy1(i)>-pi
+                           L(i)=2;
+                        end
+        end
+        %CQA开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
+         in=1;
+        for i=1:1:N
+            if L(i)==0;
+                if yy2(i)<A41&&yy2(i)>-pi|| yy2(i)<pi&&yy2(i)>A11
+                   cq2(2*in-1)=0;   cq2(2*in)=0;
+                end
+                if yy2(i)<A11&&yy2(i)>A21
+                   cq2(2*in-1)=0;   cq2(2*in)=1;
+                end
+                if yy2(i)<A21&&yy2(i)>A31
+                   cq2(2*in-1)=1;   cq2(2*in)=1;  
+                end
+                if yy2(i)<A31&&yy2(i)>A41
+                   cq2(2*in-1)=1;   cq2(2*in)=0;
+                end
+            end
+             if L(i)==1;
+                if yy2(i)<pi&&yy2(i)>pi/2
+                   cq2(2*in-1)=0;   cq2(2*in)=0;
+                end
+                if yy2(i)<pi/2&&yy2(i)>0
+                   cq2(2*in-1)=0;   cq2(2*in)=1;
+                end
+                if yy2(i)<0&&yy2(i)>-pi/2
+                   cq2(2*in-1)=1;   cq2(2*in)=1;  
+                end
+                if yy2(i)<-pi/2&&yy2(i)>-pi
+                   cq2(2*in-1)=1;   cq2(2*in)=0;
+                end
+             end
+             if L(i)==2;
+                if yy2(i)<A42&&yy2(i)>A12
+                   cq2(2*in-1)=0;   cq2(2*in)=0;
+                end
+                if yy2(i)<A12&&yy2(i)>A22
+                   cq2(2*in-1)=0;   cq2(2*in)=1;
+                end
+                if yy2(i)<A22&&yy2(i)>A32
+                   cq2(2*in-1)=1;   cq2(2*in)=1;  
+                end
+                if yy2(i)<A32&&yy2(i)>-pi||yy2(i)<pi&&yy2(i)>A42
+                   cq2(2*in-1)=1;   cq2(2*in)=0;
+                end
+             end
+             in=in+1;
+        end
+        index=1;
+         for i=1:1:N
+                if yy1(i)<pi&&yy1(i)>pi/2
+                   cq1(2*index-1)=0;   cq1(2*index)=0;
+                end
+                if yy1(i)<pi/2&&yy1(i)>0
+                   cq1(2*index-1)=0;   cq1(2*index)=1;
+                end
+                if yy1(i)<0&&yy1(i)>-pi/2
+                   cq1(2*index-1)=1;   cq1(2*index)=1;  
+                end
+                if yy1(i)<-pi/2&&yy1(i)>-pi
+                   cq1(2*index-1)=1;   cq1(2*index)=0;
+                end 
+                index=index+1;
+         end
+          cBE=0;
+        for  j=1:1:(2*N)
+            if   cq1(j)~=cq2(j);
+                cBE=cBE+1;
+            end
+        end
+        cqaBER(Snr)=cBE/(N*2); %比特不一致率
+        cqaBERbf(Snr)=cqaBER(Snr);  %备份一下cqaBER，因为之后的程序会改变其值
+                   
+                   laJcqa=0;   %协商轮数
+              while cqaBER(Snr)>0.0001
+                  [latecq1,latecq2]=function1(cq1,cq2); 
+                  mBE=0;
+                  for i=1:1:length(latecq1)
+                      if latecq1(i)~=latecq2(i)
+                           mBE=mBE+1;  
+                      end
+                  end   
+                   cqa1BER(Snr)=mBE/length(latecq1); %比特不一致率
+                   cq1=[];
+                   cq2=[];
+                   cq1=latecq1;
+                   cq2=latecq2;
+                   latecq1=[];
+                   latecq2=[];
+                   cqaBER=cqa1BER;
+                   laJcqa=laJcqa+1;
+              end
+                   lJcqa(Snr)=laJcqa; 
+                   cR(Snr)=length(cq1)/N;     %协商后剩余的比特数
+                   cq1=[];
+                   cq2=[];
+                   rateCQA(Snr) = cR(Snr)/2;   %协商前后比率
+        
         %自己===========================================================================================
          
               inn=1;
@@ -430,9 +524,14 @@ for num=1:1:30
            rate(num,i)=rateCQG(i);
  
           resmBER(num,i)=mBERbf(i);   
-          resm1R(num,i)=2;
-          resmR(num,i)=mR(i);
+          resmR(num,i)=2;
+          latemR(num,i)=mR(i);
           ratemaq(num,i)=rateMAQ(i);
+          
+          rescqaBER(num,i)=cqaBERbf(i);   
+          rescqaR(num,i)=2;
+          latecqaR(num,i)=cR(i);
+          ratecqa(num,i)=rateCQA(i);
           
           reswBER(num,i)=wBERbf(i);
           reswR(num,i)=w1R(i);
@@ -442,16 +541,22 @@ for num=1:1:30
 
 end  %循环次数num的end
 
+   %CQG
    avgBER=mean(resBER);
    avgR=mean(resR);
    avgLR=mean(lateR);
    avgrate=mean(rate);
-
+   %MAQ
    avgmBER=mean(resmBER); 
    avgmR=2;
-   avgLmR=mean(resmR);
+   avgLmR=mean(latemR);
    avgratemaq=mean(ratemaq);
-   
+   %CQA
+   avgcqaBER=mean(rescqaBER); 
+   avgcqaR=2;
+   avgLcqaR=mean(latecqaR);
+   avgratecqa=mean(ratecqa);
+   %自己
     avgwBER=mean(reswBER);
     avgwR=mean(reswR);
     avgLwR=mean(latewR);
@@ -464,6 +569,8 @@ hold on
 plot(avgmBER,'-^b');
 hold on
 plot(avgBER,'-*r');
+hold on
+plot(avgcqaBER,'-*g');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('不一致率')
@@ -475,14 +582,12 @@ legend('自己','MAQ','CQG');
 figure(2)
 plot(avgwR,'-^m');
 hold on
-plot(avgmR,'-^b');
-hold on
 plot(avgR,'-*r');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('比特生成率') 
 title('R');
-legend('自己','MAQ','CQG');
+legend('自己','CQG');
 
 %协商后的
 figure(3)
@@ -491,11 +596,13 @@ hold on
 plot(avgLmR,'-^b');
 hold on
 plot(avgLR,'-*r');
+hold on
+plot(avgLcqaR,'-*g');
 grid on
 xlim([10,30]);
 xlabel('信噪比');ylabel('协商后比特生成率') 
 title('LateR');
-legend('自己','MAQ','CQG');
+legend('自己','MAQ','CQG','CQA');
 
 %协商后的rate
 figure(4)
@@ -504,11 +611,13 @@ hold on
 plot(avgratemaq,'-^b');
 hold on
 plot(avgrate,'-*r');
+hold on
+plot(avgratecqa,'-*g');
 grid on
 xlim([10,30]);
-xlabel('信噪比');ylabel('协商后rate') 
+xlabel('信噪比');ylabel('协商前后rate') 
 title('Rate');
-legend('自己','MAQ','CQG');
+legend('自己','MAQ','CQG','CQA');
 
 % %平滑曲线,测试的
 % a = 10:1:30;  %横坐标
