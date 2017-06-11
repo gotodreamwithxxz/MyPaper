@@ -1,7 +1,7 @@
                 
 close all
 clc
-for num=1:1:200
+for num=1:1:300
     for k=10:1:30
         N=1000;%ÐÅºÅ³¤¶È
         signal=randi([0,1],1,N);
